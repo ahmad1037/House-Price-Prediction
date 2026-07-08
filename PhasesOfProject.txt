@@ -1,0 +1,91 @@
+                    MILESTONE 1: Project Setup
+Step 1
+    Created Python Virtual Environment
+    python -m venv .venv
+    .venv\Scripts\activate
+
+Step 2
+    Installed Required Packages 
+    pip install pandas numpy matplotlib scikit-learn jupyter notebook joblib streamlit
+
+    Saved the installed packages in a file as dependencies with versions
+    pip freeze > requirements.txt
+
+Step 3 
+    Created folder structure 
+house-price-prediction/
+│
+├── app/
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── images/
+│
+├── models/
+│
+├── notebooks/
+│
+├── src/
+│
+├── tests/
+│
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── LICENSE
+
+                    MILESTONE 2: Choosing Dataset
+We'll use the Ames Housing dataset instead. It has:
+
+Around 80 features
+Missing values
+Categorical and numerical columns
+Real feature engineering opportunities
+
+These characteristics make it much closer to what you'll encounter in industry.
+
+What we are building 
+Raw Dataset
+      │
+      ▼
+Data Cleaning
+      │
+      ▼
+EDA
+      │
+      ▼
+Feature Engineering
+      │
+      ▼
+Model Training
+      │
+      ▼
+Model Comparison
+      │
+      ▼
+Best Model Saved
+      │
+      ▼
+Prediction API
+      │
+      ▼
+Streamlit Web App
+
+Git workflow
+git add .
+git commit -m "Initialize project structure"
+
+
+Some Ground Rules
+As we build this portfolio:
+
+Don't copy code from tutorials.
+Understand every line before committing it.
+Keep functions small and focused.
+Write docstrings for public functions.
+Use type hints where appropriate.
+Follow PEP 8 style guidelines.
+
+These habits are just as valuable as the models themselves.
