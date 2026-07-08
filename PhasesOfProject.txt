@@ -89,3 +89,15 @@ Use type hints where appropriate.
 Follow PEP 8 style guidelines.
 
 These habits are just as valuable as the models themselves.
+
+Think of it like this:
+
+Project
+│
+├── notebooks/        ← Exploration and experimentation
+│
+├── src/              ← Production code
+│
+├── app/              ← Streamlit app
+│
+└── models/           ← Saved models
