@@ -101,3 +101,67 @@ Project
 ├── app/              ← Streamlit app
 │
 └── models/           ← Saved models
+
+
+Raw Dataset
+      │
+      ▼
+Data Validation
+      │
+      ▼
+Missing Value Handling
+      │
+      ▼
+Feature Engineering
+      │
+      ▼
+Encoding
+      │
+      ▼
+Scaling
+      │
+      ▼
+Preprocessing Pipeline
+      │
+      ▼
+Processed Data
+
+
+Src folder each file details
+1- CONFIG.Py
+Stores project-wide constants
+
+2- DATA_LOADER.Py
+Only responsible for loading data
+
+3- PREPROCESSING.Py
+Handles
+
+Missing values
+Encoding
+Scaling
+
+4- FEATURE_ENGINEERING.Py
+Creates new features
+
+5- UTILS.Py
+Small helper Functions.
+
+6- PIPELINE.Py
+Creates the complete preprocssing pipeline
+
+Numerical Columns
+      │
+      ▼
+Median Imputation
+      │
+      ▼
+Scaling
+
+Categorical Columns
+      │
+      ▼
+Most Frequent Imputation
+      │
+      ▼
+One-Hot Encoding
