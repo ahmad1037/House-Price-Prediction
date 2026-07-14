@@ -23,3 +23,9 @@ TARGET_COLUMN = "SalePrice"
 
 # Reproducibility
 RANDOM_STATE = 42
+
+# Test size for validation
+TEST_SIZE = 0.2
+
+# Random seed
+RANDOM_STATE = 42

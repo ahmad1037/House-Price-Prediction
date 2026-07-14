@@ -64,3 +64,71 @@ def identify_feature_types(
         numerical_features,
         categorical_features,
     )
+
+def create_preprocessor(
+    numerical_features,
+    categorical_features,
+):
+    """
+    Create preprocessing pipeline.
+    """
+
+    numerical_pipeline = Pipeline(
+        steps=[
+            (
+                "imputer",
+                SimpleImputer(strategy="median"),
+            ),
+            (
+                "scaler",
+                StandardScaler(),
+            ),
+        ]
+    )
+
+    categorical_pipeline = Pipeline(
+        steps=[
+            (
+                "imputer",
+                SimpleImputer(
+                    strategy="most_frequent"
+                ),
+            ),
+            (
+                "encoder",
+                OneHotEncoder(
+                    handle_unknown="ignore"
+                ),
+            ),
+        ]
+    )
+
+    preprocessor = ColumnTransformer(
+
+        transformers=[
+
+            (
+
+                "num",
+
+                numerical_pipeline,
+
+                numerical_features,
+
+            ),
+
+            (
+
+                "cat",
+
+                categorical_pipeline,
+
+                categorical_features,
+
+            ),
+
+        ]
+
+    )
+
+    return preprocessor
