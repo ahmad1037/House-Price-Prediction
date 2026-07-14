@@ -2,11 +2,19 @@
 Training script for the House Price Prediction project.
 """
 
+from xml.parsers.expat import model
+
+from sklearn import metrics
 from sklearn.model_selection import train_test_split
 
 from src.config import (
     RANDOM_STATE,
     TEST_SIZE,
+)
+from src.models import create_linear_regression
+
+from src.evaluation import (
+    evaluate_regression_model,
 )
 
 from src.data_loader import load_train_data
@@ -69,6 +77,28 @@ def main():
     print("\nProcessed Validation Data")
 
     print(X_valid_processed.shape)
+    print("\nTraining Linear Regression...")
+
+    model = create_linear_regression()
+
+    model.fit(
+    X_train_processed,
+    y_train,
+    )
+    y_pred = model.predict(
+    X_valid_processed
+)
+    metrics = evaluate_regression_model(
+    y_valid,
+    y_pred,
+)
+    print("\nEvaluation Results")
+    print("-" * 30)
+
+    for metric, value in metrics.items():
+        print(f"{metric}: {value:.2f}")
+
+
 
 if __name__ == "__main__":
     main()
