@@ -1,7 +1,7 @@
 """
 Training script for the House Price Prediction project.
 """
-
+import pandas as pd
 from xml.parsers.expat import model
 
 from sklearn import metrics
@@ -17,6 +17,8 @@ from src.evaluation import (
     evaluate_regression_model,
 )
 
+from src.models import get_available_models
+
 from src.data_loader import load_train_data
 
 from src.preprocessing import (
@@ -24,6 +26,10 @@ from src.preprocessing import (
     identify_feature_types,
     create_preprocessor,
 )
+from src.model_io import (
+    save_object,
+)
+
 def main():
     """
     Main training workflow.
@@ -77,27 +83,40 @@ def main():
     print("\nProcessed Validation Data")
 
     print(X_valid_processed.shape)
-    print("\nTraining Linear Regression...")
 
-    model = create_linear_regression()
+    models = get_available_models()
 
-    model.fit(
-    X_train_processed,
-    y_train,
-    )
-    y_pred = model.predict(
-    X_valid_processed
-)
-    metrics = evaluate_regression_model(
-    y_valid,
-    y_pred,
-)
-    print("\nEvaluation Results")
-    print("-" * 30)
+    results = []
 
-    for metric, value in metrics.items():
-        print(f"{metric}: {value:.2f}")
+    for model_name, model in models.items():
 
+        model.fit(
+            X_train_processed,
+            y_train,
+        )
+
+        predictions = model.predict(
+            X_valid_processed,
+        )
+
+        metrics = evaluate_regression_model(
+            y_valid,
+            predictions,
+        )
+
+        results.append({
+            "Model": model_name,
+            **metrics,
+        })
+
+    results_df = pd.DataFrame(results)
+
+    print("\nEvaluation Results:")
+    best_model = results_df.loc[
+    results_df["RMSE"].idxmin()
+]
+
+    print(best_model)
 
 
 if __name__ == "__main__":
