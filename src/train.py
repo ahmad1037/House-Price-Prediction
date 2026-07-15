@@ -1,18 +1,26 @@
 """
 Training script for the House Price Prediction project.
 """
+from matplotlib.pyplot import grid
 import pandas as pd
 from xml.parsers.expat import model
-
+from src.tuning import grid_search_tuning
+from src.model_configs import RANDOM_FOREST_PARAMS
+from src.models import create_random_forest
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
-
+from src.explainability import (
+    get_feature_importance,
+    plot_feature_importance,
+    calculate_residuals,
+    plot_residuals
+)
 from src.config import (
     RANDOM_STATE,
     TEST_SIZE,
 )
 from src.models import create_linear_regression
-
+from src.preprocessing import get_feature_names
 from src.evaluation import (
     evaluate_regression_model,
 )
@@ -90,7 +98,7 @@ def main():
     best_model = None
     best_model_name = None
     results = []
-
+    metrics = {}
     for model_name, model in models.items():
 
         model.fit(
@@ -118,19 +126,87 @@ def main():
             best_model = model
 
             best_model_name = model_name
+        
 
     results_df = pd.DataFrame(results)
     print(results_df)
-    save_object(
+    """save_object(
     best_model,
     "best_model.joblib",
-)
+)"""
 
     print(f"Best model: {best_model_name}")
     results_df.to_csv(
     "reports/model_comparison.csv",
     index=False,
 )
+    rf = create_random_forest()
+    """
+    grid = grid_search_tuning(
+        model=rf,
+        param_grid=RANDOM_FOREST_PARAMS,
+        X_train=X_train_processed,
+        y_train=y_train,
+)
+    print("Best Parameters:")
+    print(grid.best_params_)
+    print("Best CV RMSE:")
+    print(-grid.best_score_)
+    best_rf = grid.best_estimator_
+
+    predictions = best_rf.predict(
+        X_valid_processed
+    )
+
+    metrics = evaluate_regression_model(
+        y_valid,
+        predictions,
+    )
+
+    print(metrics)
+    save_object(
+    best_rf,
+    "best_model.joblib",
+)"""
+    preprocessor.fit(X_train)
+
+
+    feature_names = get_feature_names(preprocessor)
+    importance_df = get_feature_importance(
+        best_model,
+        feature_names,
+    )
+
+    importance_df.head()
+    print(importance_df.head())
+
+    importance_df.to_csv(
+    "reports/feature_importance.csv",
+    index=False,
+)
+    residuals = calculate_residuals(
+    y_valid,
+    predictions,
+)
+    plot_feature_importance(importance_df)
+    print(residuals[:10])
+    residual_df = pd.DataFrame({
+
+    "Actual": y_valid,
+
+    "Predicted": predictions,
+
+    "Residual": residuals,
+
+    }
+)   
+    print(residual_df)
+
+    residual_df.to_csv(
+    "reports/residuals.csv",
+    index=False,
+)
+    plot_residuals(residual_df)
 
 
 if __name__ == "__main__":

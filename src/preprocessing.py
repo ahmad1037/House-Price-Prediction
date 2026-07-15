@@ -132,3 +132,22 @@ def create_preprocessor(
     )
 
     return preprocessor
+
+def get_feature_names(
+    preprocessor,
+):
+    """
+    Return feature names after preprocessing.
+
+    Parameters
+    ----------
+    preprocessor : ColumnTransformer
+        A fitted preprocessing pipeline.
+
+    Returns
+    -------
+    list[str]
+        Feature names after transformation.
+    """
+
+    return preprocessor.get_feature_names_out().tolist()
