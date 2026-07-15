@@ -86,6 +86,9 @@ def main():
 
     models = get_available_models()
 
+    best_rmse = float("inf")
+    best_model = None
+    best_model_name = None
     results = []
 
     for model_name, model in models.items():
@@ -108,15 +111,26 @@ def main():
             "Model": model_name,
             **metrics,
         })
+        if metrics["RMSE"] < best_rmse:
+
+            best_rmse = metrics["RMSE"]
+
+            best_model = model
+
+            best_model_name = model_name
 
     results_df = pd.DataFrame(results)
+    print(results_df)
+    save_object(
+    best_model,
+    "best_model.joblib",
+)
 
-    print("\nEvaluation Results:")
-    best_model = results_df.loc[
-    results_df["RMSE"].idxmin()
-]
-
-    print(best_model)
+    print(f"Best model: {best_model_name}")
+    results_df.to_csv(
+    "reports/model_comparison.csv",
+    index=False,
+)
 
 
 if __name__ == "__main__":
