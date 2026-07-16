@@ -93,3 +93,48 @@ def plot_residuals(
     )
 
     plt.show()
+
+def plot_predictions(
+    y_true,
+    y_pred,
+):
+    """
+    Plot actual vs predicted values.
+    """
+
+    plt.figure(figsize=(8, 6))
+
+    plt.scatter(
+        y_true,
+        y_pred,
+        alpha=0.6,
+    )
+
+    min_value = min(
+        y_true.min(),
+        y_pred.min(),
+    )
+
+    max_value = max(
+        y_true.max(),
+        y_pred.max(),
+    )
+
+    plt.plot(
+        [min_value, max_value],
+        [min_value, max_value],
+    )
+
+    plt.xlabel("Actual Price")
+
+    plt.ylabel("Predicted Price")
+
+    plt.title("Actual vs Predicted")
+
+    plt.tight_layout()
+
+    plt.savefig(
+        "reports/prediction_vs_actual.png"
+    )
+
+    plt.show()

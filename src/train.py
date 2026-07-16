@@ -13,6 +13,7 @@ from src.explainability import (
     get_feature_importance,
     plot_feature_importance,
     calculate_residuals,
+    plot_predictions,
     plot_residuals
 )
 from src.config import (
@@ -188,7 +189,7 @@ def main():
     y_valid,
     predictions,
 )
-    plot_feature_importance(importance_df)
+    #plot_feature_importance(importance_df)
     print(residuals[:10])
     residual_df = pd.DataFrame({
 
@@ -206,7 +207,23 @@ def main():
     "reports/residuals.csv",
     index=False,
 )
-    plot_residuals(residual_df)
+    largest_errors = residual_df.copy()
+
+    largest_errors["Absolute Error"] = (
+        largest_errors["Residual"].abs()
+    )
+
+    largest_errors = largest_errors.sort_values(
+        by="Absolute Error",
+        ascending=False,
+    )
+
+    largest_errors.head(10)
+    #plot_residuals(residual_df)
+    plot_predictions(y_valid, predictions)
+    
+
+
 
 
 if __name__ == "__main__":
