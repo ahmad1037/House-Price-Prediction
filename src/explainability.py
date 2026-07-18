@@ -1,7 +1,7 @@
 """
 Model explainability utilities.
 """
-
+import shap
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -138,3 +138,12 @@ def plot_predictions(
     )
 
     plt.show()
+
+def create_shap_explainer(
+    model,
+):
+    """
+    Create a SHAP TreeExplainer.
+    """
+
+    return shap.TreeExplainer(model)

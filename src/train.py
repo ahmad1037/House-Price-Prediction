@@ -1,15 +1,21 @@
 """
 Training script for the House Price Prediction project.
 """
+import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.pyplot import grid
 import pandas as pd
 from xml.parsers.expat import model
+import numpy as np
+import scipy.sparse as sp
+import shap
 from src.tuning import grid_search_tuning
 from src.model_configs import RANDOM_FOREST_PARAMS
 from src.models import create_random_forest
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from src.explainability import (
+    create_shap_explainer,
     get_feature_importance,
     plot_feature_importance,
     calculate_residuals,
@@ -220,7 +226,36 @@ def main():
 
     largest_errors.head(10)
     #plot_residuals(residual_df)
-    plot_predictions(y_valid, predictions)
+    #plot_predictions(y_valid, predictions)
+    explainer = create_shap_explainer(best_model)
+
+    # Convert sparse matrix to dense
+    if sp.issparse(X_valid_processed):
+        X_valid_processed = X_valid_processed.toarray()
+
+    # Force numeric dtype
+    X_valid_processed = np.asarray(X_valid_processed, dtype=np.float64)
+
+    print(type(X_valid_processed))
+    print(X_valid_processed.dtype)
+
+    shap_values = explainer.shap_values(X_valid_processed)
+
+    shap.summary_plot(
+        shap_values,
+        X_valid_processed,
+        feature_names=feature_names,
+        show=False,  # Prevents the plot from displaying immediately
+    )
+
+    plt.tight_layout()
+    plt.savefig(
+        "reports/shap_summary_plot.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+    plt.close()
+
     
 
 
