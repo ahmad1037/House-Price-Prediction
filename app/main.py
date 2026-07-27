@@ -1,36 +1,25 @@
 from fastapi import FastAPI
-from app.schemas import HouseFeatures
+
+from app.schemas import (
+    HouseFeatures,
+    PredictionResponse,
+)
+
 from app.predictor import predict
+
+
 app = FastAPI(
     title="House Price Prediction API",
     version="1.0.0",
 )
+
+
 @app.get("/")
 def root():
     return {
         "message": "House Price Prediction API is running."
     }
 
-@app.post("/predict")
-def predict_house_price(
-    features: HouseFeatures,
-):
-    """
-    Predict house price.
-    """
-
-    prediction = predict(
-        features.model_dump()
-    )
-
-    return {
-        "predicted_price": prediction
-    }
-
-from app.schemas import (
-    HouseFeatures,
-    PredictionResponse,
-)
 
 @app.post(
     "/predict",
@@ -39,8 +28,18 @@ from app.schemas import (
 def predict_house_price(
     features: HouseFeatures,
 ):
+    """
+    Predict house price from house features.
+    """
+
     prediction = predict(
-        features.model_dump()
+        {
+            "Overall Qual": features.OverallQual,
+            "Gr Liv Area": features.GrLivArea,
+            "Garage Cars": features.GarageCars,
+            "Total Bsmt SF": features.TotalBsmtSF,
+            "Year Built": features.YearBuilt,
+        }
     )
 
     return PredictionResponse(

@@ -137,18 +137,17 @@ def main():
 
     results_df = pd.DataFrame(results)
     print(results_df)
-    """save_object(
+    save_object(
     best_model,
     "best_model.joblib",
-)"""
-
+)
     print(f"Best model: {best_model_name}")
     results_df.to_csv(
     "reports/model_comparison.csv",
     index=False,
 )
     rf = create_random_forest()
-    """
+    
     grid = grid_search_tuning(
         model=rf,
         param_grid=RANDOM_FOREST_PARAMS,
@@ -174,7 +173,7 @@ def main():
     save_object(
     best_rf,
     "best_model.joblib",
-)"""
+)
     preprocessor.fit(X_train)
 
 

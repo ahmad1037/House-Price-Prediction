@@ -1,4 +1,3 @@
-from turtle import pd
 import pandas as pd
 from src.model_io import load_object
 model = load_object(
@@ -8,7 +7,6 @@ model = load_object(
 preprocessor = load_object(
     "preprocessor.joblib"
 )
-
 DEFAULT_INPUT = {
     "Order": 0,
     "PID": 0,
@@ -93,14 +91,59 @@ DEFAULT_INPUT = {
     "Sale Condition": "Normal",
 }
 
+
+
+import pandas as pd
+
 def predict(input_data: dict):
-    data = DEFAULT_INPUT.copy()
-    data.update(input_data)
 
-    df = pd.DataFrame([data])
+    # Get columns expected by the trained preprocessor
+    expected_columns = list(
+        preprocessor.feature_names_in_
+    )
 
+    # Check for invalid user inputs
+    invalid_columns = (
+        set(input_data) - set(expected_columns)
+    )
+
+    if invalid_columns:
+        raise ValueError(
+            f"Unknown input columns: {invalid_columns}"
+        )
+
+    # Start with defaults
+    default_data = DEFAULT_INPUT.copy()
+
+    # Add missing expected columns
+    for column in expected_columns:
+        if column not in default_data:
+            default_data[column] = None
+
+    # Override defaults with user values
+    default_data.update(input_data)
+
+    # Keep exact training column order
+    df = pd.DataFrame(
+        [default_data],
+        columns=expected_columns,
+    )
+
+    # Transform
     processed = preprocessor.transform(df)
 
+    # Predict
     prediction = model.predict(processed)
 
     return float(prediction[0])
+
+"""sample = {
+    "Overall Qual": 8,
+    "Gr Liv Area": 2200,
+    "Garage Cars": 3,
+    "Total Bsmt SF": 1150,
+    "Year Built": 2015,
+}
+
+for i in range(3):
+    print(predict(sample))"""
