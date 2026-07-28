@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+
+.venv/
+.git/
+
+notebooks/
+
+reports/
+
+.vscode/
+
+.idea/

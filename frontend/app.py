@@ -2,6 +2,8 @@ import streamlit as st
 
 import requests
 
+from config import API_URL
+
 st.set_page_config(
 
     page_title="House Price Prediction",
@@ -118,12 +120,9 @@ if predict:
     try:
 
         response = requests.post(
-
-            "http://127.0.0.1:8000/predict",
-
+            API_URL,
             json=payload,
-
-        )
+)
 
         response.raise_for_status()
 
