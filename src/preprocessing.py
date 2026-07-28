@@ -57,8 +57,8 @@ def identify_feature_types(
     ).columns.tolist()
 
     categorical_features = X.select_dtypes(
-        include=["object"]
-    ).columns.tolist()
+    include=["object", "string"]
+).columns.tolist()
 
     return (
         numerical_features,
