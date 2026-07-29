@@ -9,6 +9,7 @@ from xml.parsers.expat import model
 import numpy as np
 import scipy.sparse as sp
 import shap
+from src.artifacts import ARTIFACTS_DIR
 from src.tuning import grid_search_tuning
 from src.model_configs import RANDOM_FOREST_PARAMS
 from src.models import create_random_forest
@@ -22,6 +23,7 @@ from src.explainability import (
     plot_predictions,
     plot_residuals
 )
+from pathlib import Path
 from src.config import (
     RANDOM_STATE,
     TEST_SIZE,
@@ -255,8 +257,41 @@ def main():
     )
     plt.close()
 
-    
+    ARTIFACTS_DIR = Path("artifacts")
+    ARTIFACTS_DIR.mkdir(exist_ok=True)
+    feature_columns = X_train.columns.tolist()
 
+    with open(
+        ARTIFACTS_DIR / "feature_columns.json",
+        "w",
+    ) as f:
+
+        json.dump(
+            feature_columns,
+            f,
+            indent=4,
+        )
+    with open(
+        ARTIFACTS_DIR / "numerical_columns.json",
+        "w",
+    ) as f:
+
+        json.dump(
+            numerical_features,
+            f,
+            indent=4,
+        )
+
+    with open(
+        ARTIFACTS_DIR / "categorical_columns.json",
+        "w",
+    ) as f:
+
+        json.dump(
+            categorical_features,
+            f,
+            indent=4,
+        )
 
 
 
