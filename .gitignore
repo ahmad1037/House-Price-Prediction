@@ -6,7 +6,6 @@ __pycache__/
 *.pyo
 
 models/*.pkl
-models/*.joblib
 
 data/raw/*
 data/processed/*
